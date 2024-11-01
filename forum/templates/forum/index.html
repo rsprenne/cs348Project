@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Posts</title>
+</head>
+<body>
+    <main>
+        <h1>Forum Posts</h1>
+        
+        <!-- Add New Post Button -->
+        <div class="add-post">
+            <a href="{% url 'add_post' %}" class="add-post-button">Create New Post</a>
+        </div>
+        
+        {% if post_list.all %}
+            <ul>
+                {% for post in post_list.all %}
+                    <li>
+                        <a href="{% url 'detail' post.id %}">{{ post.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No posts are available.</p>
+        {% endif %}
+    </main>
+</body>
+</html>
