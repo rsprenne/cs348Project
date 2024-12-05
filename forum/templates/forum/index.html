@@ -13,11 +13,29 @@
             <a href="{% url 'add_post' %}" class="add-post-button">Create New Post</a>
         </div>
         
+        <div class="tag-filter">
+            <form method="get">
+                <select name="tag" class="tag-select" onchange="this.form.submit()">
+                    <option value="">All Tags</option>
+                    {% for tag in all_tags %}
+                        <option value="{{ tag.name }}" {% if selected_tag == tag.name %}selected{% endif %}>
+                            {{ tag.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+        
         {% if post_list.all %}
             <ul>
                 {% for post in post_list.all %}
                     <li>
                         <a href="{% url 'detail' post.id %}">{{ post.title }}</a>
+                        <div class="post-tags">
+                            {% for tag in post.tags.all %}
+                                <a href="{% url 'index' %}?tag={{ tag.name }}" class="tag-badge">{{ tag.name }}</a>
+                            {% endfor %}
+                        </div>
                     </li>
                 {% endfor %}
             </ul>
@@ -25,5 +43,26 @@
             <p>No posts are available.</p>
         {% endif %}
     </main>
+
+    <style>
+        .tag-filter {
+            margin-bottom: 20px;
+        }
+        .tag-select {
+            padding: 5px;
+            margin-right: 10px;
+        }
+        .tag-badge {
+            background-color: #f0f0f0;
+            padding: 3px 8px;
+            margin-right: 5px;
+            border-radius: 3px;
+            text-decoration: none;
+            color: #333;
+        }
+        .post-tags {
+            margin-top: 10px;
+        }
+    </style>
 </body>
 </html>

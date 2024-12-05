@@ -20,10 +20,66 @@
                 <label for="content">Content:</label>
                 <textarea name="content" id="content" rows="10" required>{{ post.content }}</textarea>
             </div>
+
+            <div class="form-group">
+                <label for="tags">Tags (comma-separated):</label>
+
+                {% if post.tags.all %}
+                <div class="current-tags">
+                    <strong>Current Tags:</strong>
+                    {% for tag in post.tags.all %}
+                        <span class="tag-badge">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <input type="text" name="tags" id="tags"
+                    value="{{ existing_tags }}"
+                    placeholder="e.g., Assignment 1, Exam, Project">
+                <p class="tag-help">Separate multiple tags with commas. Existing tags will be replaced.</p>
+            </div>
             
             <button type="submit">Save Changes</button>
             <a href="{% url 'detail' post.id %}" class="cancel-button">Cancel</a>
         </form>
     </main>
+
+    <style>
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, 
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .tag-help {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .current-tags {
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #333;
+        }
+        .current-tags strong {
+            margin-right: 10px;
+        }
+        .tag-badge {
+            background-color: #f0f0f0;
+            padding: 3px 8px;
+            margin-right: 5px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+    </style>
 </body>
 </html>
