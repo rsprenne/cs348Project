@@ -2,6 +2,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from .models import Post, Comment, Tag
+from django.db.models import Count
 
 def index(request):
     all_tags = Tag.objects.all()
@@ -18,11 +19,16 @@ def index(request):
         "all_tags": all_tags,
         "selected_tag": selected_tag
     }
+
     return render(request, "forum/index.html", context)
 
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     return render(request, "forum/detail.html", {"post": post})
+
+def remove_old_tags():
+    old_tags = Tag.objects.annotate(post_count=Count('posts')).filter(post_count=0)
+    old_tags.delete()
 
 def add_post(request):
     if request.method == 'POST':
@@ -31,6 +37,7 @@ def add_post(request):
             content=request.POST['content'],
             author=request.POST['author'],
         )
+
         tags_input = request.POST.get('tags', '')
         if tags_input:
             tag_names = [tag.strip() for tag in tags_input.split(',')]
@@ -38,7 +45,11 @@ def add_post(request):
                 if tag_name:
                     tag, created = Tag.objects.get_or_create(name=tag_name)
                     new_post.tags.add(tag)
+                    
+        remove_old_tags()
+        
         return redirect('detail', post_id=new_post.id)
+    
     return render(request, 'forum/add_post.html')
 
 def add_comment(request, post_id):
@@ -49,6 +60,7 @@ def add_comment(request, post_id):
             content=request.POST['content'],
             author=request.POST['author']
         )
+
         return redirect('detail', post_id=post_id)
     
 def delete_post(request, post_id):
@@ -56,6 +68,7 @@ def delete_post(request, post_id):
         post = get_object_or_404(Post, pk=post_id)
         post.delete()
         return redirect('index')
+    
     return HttpResponseForbidden("Invalid method")
 
 def delete_comment(request, post_id, comment_id):
@@ -63,6 +76,7 @@ def delete_comment(request, post_id, comment_id):
         comment = get_object_or_404(Comment, pk=comment_id, post_id=post_id)
         comment.delete()
         return redirect('detail', post_id=post_id)
+    
     return HttpResponseForbidden("Invalid method")
 
 def edit_post(request, post_id):
@@ -81,6 +95,8 @@ def edit_post(request, post_id):
                 if tag_name:
                     tag, created = Tag.objects.get_or_create(name = tag_name)
                     post.tags.add(tag)
+
+        remove_old_tags()
 
         return redirect('detail', post_id=post_id)
     

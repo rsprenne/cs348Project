@@ -33,9 +33,8 @@
                 </div>
                 {% endif %}
 
-                <input type="text" name="tags" id="tags"
-                    value="{{ existing_tags }}"
-                    placeholder="e.g., Assignment 1, Exam, Project">
+                <input type="text" name="tags" id="tags" value="{{ existing_tags }}" pattern="^[a-zA-Z0-9\s,]+" 
+                    placeholder="Only alphanumeric characters are accepted">
                 <p class="tag-help">Separate multiple tags with commas. Existing tags will be replaced.</p>
             </div>
             
