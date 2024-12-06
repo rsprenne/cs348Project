@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+"^[a-zA-Z0-9\s,.]+"<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,7 +23,7 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" name="title" id="title" required>
+                <input type="text" name="title" id="title" pattern="^[a-zA-Z0-9\s,.]+" required>
             </div>
             
             <div class="form-group">
@@ -33,12 +33,12 @@
 
             <div class="form-group">
                 <label for="author">Author:</label>
-                <input type="text" name="author"  pattern="^[a-zA-Z0-9\s,]+" id="author" required>
+                <input type="text" name="author"  pattern="^[a-zA-Z0-9\s,.]+" id="author" required>
             </div>
 
             <div class="form-group">
                 <label for="tags">Tags:</label>
-                <input type="text" id="tags" name="tags" pattern="^[a-zA-Z0-9\s,]+" placeholder="Only alphanumeric characters accepted">
+                <input type="text" id="tags" name="tags" pattern="^[a-zA-Z0-9\s,.]+" placeholder="Only alphanumeric characters accepted">
                 <p class="tag-help">Separate multiple tags with commas.</p>
             </div>
             

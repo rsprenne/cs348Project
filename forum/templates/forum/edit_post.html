@@ -13,7 +13,7 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" name="title" id="title" value="{{ post.title }}" required>
+                <input type="text" name="title" id="title" pattern="^[a-zA-Z0-9\s,.]+" value="{{ post.title }}" required>
             </div>
             
             <div class="form-group">
@@ -22,7 +22,7 @@
             </div>
 
             <div class="form-group">
-                <label for="tags">Tags (comma-separated):</label>
+                <label for="tags">Tags:</label>
 
                 {% if post.tags.all %}
                 <div class="current-tags">
@@ -33,7 +33,7 @@
                 </div>
                 {% endif %}
 
-                <input type="text" name="tags" id="tags" value="{{ existing_tags }}" pattern="^[a-zA-Z0-9\s,]+" 
+                <input type="text" name="tags" id="tags" value="{{ existing_tags }}" pattern="^[a-zA-Z0-9\s,.]+" 
                     placeholder="Only alphanumeric characters are accepted">
                 <p class="tag-help">Separate multiple tags with commas. Existing tags will be replaced.</p>
             </div>
