@@ -22,10 +22,10 @@ class Post(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     tags = models.ManyToManyField(Tag, related_name='posts')
 
-    db_index = True
+    # db_index = True
 
-    class Meta:
-        indexes = [models.Index(fields=['tags'])]
+    # class Meta:
+    #     indexes = [models.Index(fields=['tags'])]
 
     def __str__(self):
         return self.title
